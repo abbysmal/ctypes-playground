@@ -1,0 +1,37 @@
+OASISFormat  : 0.4
+Name         : expat
+Version      : 1.1.0
+Synopsis     : Expat bindings for OCaml
+Authors      : Enguerrand Decorne
+License      : BSD-3-clause
+Plugins      : DevFiles (0.3), META (0.3)
+BuildTools   : ocamlbuild
+Maintainers  : Enguerrand Decorne
+Homepage     : https://github.com/Engil/ctypes-playground
+
+Library "expat"
+  Path:             lib
+  Modules:          Expat
+  InternalModules:  Expat_bindings, Expat_generated
+  CSources:         Expat_stubs.c
+  CCLib:            -lexpat
+  CCOpt:            -I $pkg_ctypes_stubs
+  BuildDepends:     bytes, ctypes.stubs, ctypes.foreign
+  BuildTools:       expat_bindgen
+
+Executable "expat_bindgen"
+  Install:          false
+  Path:             lib_gen
+  MainIs:           Expat_bindgen.ml
+  BuildDepends:     ctypes.stubs,ctypes.foreign
+
+Executable "test_expat"
+  Build$:           flag(tests)
+  Install:          false
+  Path:             lib_test
+  MainIs:           test_expat.ml
+  BuildDepends:     expat
+  CompiledObject:   best
+
+Test "expat"
+  Command:          $test_expat
